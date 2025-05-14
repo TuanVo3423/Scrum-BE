@@ -123,29 +123,29 @@ export const resendVerifyEmailController = async (req: Request, res: Response) =
   return res.json(result)
 }
 
-export const forgotPasswordController = async (
-  req: Request<ParamsDictionary, any, ForgotPasswordReqBody>,
-  res: Response
-) => {
-  const email = req.body.email
-  const user = await databaseServices.users.findOne({ email })
-  if (!user) {
-    return res.status(HTTP_STATUS.NOT_FOUND).json({
-      message: USER_MESSAGES.USER_NOT_FOUND
-    })
-  }
-  if (user.forgot_password_token) {
-    return res.json({ message: USER_MESSAGES.ALREADY_SEND_FORGOT_PASSWORD_EMAIL })
-  }
-  // create a new forgot password token
-  const result = await userServices.forgotPassword({
-    user_id: user._id.toString(),
-    verify: user.verify,
-    email,
-    name: user.name
-  })
-  return res.json(result)
-}
+    export const forgotPasswordController = async (
+      req: Request<ParamsDictionary, any, ForgotPasswordReqBody>,
+      res: Response
+    ) => {
+      const email = req.body.email
+      const user = await databaseServices.users.findOne({ email })
+      if (!user) {
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
+          message: USER_MESSAGES.USER_NOT_FOUND
+        })
+      }
+      if (user.forgot_password_token) {
+        return res.json({ message: USER_MESSAGES.ALREADY_SEND_FORGOT_PASSWORD_EMAIL })
+      }
+      // create a new forgot password token
+      const result = await userServices.forgotPassword({
+        user_id: user._id.toString(),
+        verify: user.verify,
+        email,
+        name: user.name
+      })
+      return res.json(result)
+    }
 
 export const verifyForgotPasswordController = async (req: Request, res: Response) => {
   return res.json({
